@@ -1,0 +1,51 @@
+name: Update versionCode in Release PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  set-versioncode:
+    # Only run on Release PRs opened by release-please (they carry this label)
+    if: contains(join(fromJson(toJson(github.event.pull_request.labels)).*.name, ','), 'autorelease: pending')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          fetch-depth: 0
+
+      - name: Compute versionCode from semver in manifest
+        run: |
+          # Read the next version from release-please manifest in the PR
+          VER=$(jq -r '."."' .github/.release-please-manifest.json)
+          echo "Next version is: $VER"
+
+          # Extract MAJOR.MINOR.PATCH (ignore prerelease/build metadata if present)
+          if [[ "$VER" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+) ]]; then
+            MAJOR=${BASH_REMATCH[1]}
+            MINOR=${BASH_REMATCH[2]}
+            PATCH=${BASH_REMATCH[3]}
+          else
+            echo "Could not parse semver from: $VER"
+            exit 1
+          fi
+
+          # Monotonic integer strategy for Google Play:
+          # versionCode = MAJOR*10000 + MINOR*100 + PATCH  (e.g., 2.3.4 -> 20304)
+          CODE=$((MAJOR*10000 + MINOR*100 + PATCH))
+          echo "Computed versionCode: $CODE"
+
+          echo $CODE > versionCode.txt
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add versionCode.txt
+          git commit -m "chore(android): set versionCode $CODE for $VER" || echo "No changes to commit"
+          git push
