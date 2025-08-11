@@ -7,6 +7,10 @@ A Unity sample project demonstrating a clean, maintainable integration of **AppL
 
 ![AppLovin MAX Unity Demo Screenshot in Unity Editor](images/applovin-demo-app.png)
 
+[Test the app on your own (APK Build 1.2.2)](https://drive.google.com/file/d/1OzIHEC8nNAk1F-vSLpD3YsqLrOG33_F7/view?usp=sharing)
+
+[Watch the app in action (Video Recording)](https://drive.google.com/file/d/1q5DcJc4B4QXEw6DGDT8PVSO4AKfCTTFk/view?usp=sharing)
+
 The project implements **all listener and delegate methods** for each ad type — even if only for logging — so you can clearly see the lifecycle of ads and how to hook into them.
 
 This project and documentation can be extended upon request. New features like Zenject demonstration, automated android version and similar useful implementation can be added.
@@ -240,6 +244,12 @@ All relevant MAX callbacks are implemented and logged:
 - **Mediation Debugger** – Use the “Open Mediation Debugger” button to inspect network setup.
 - **Verbose Logging** – Toggle in `MaxInitializer` to see detailed logs.
 - **Event Logs** – All ad lifecycle events are logged with `[Banner]`, `[Interstitial]`, `[Rewarded]` tags.
+
+---
+
+## Known Issues
+
+There is no guard to protect the current Ad Service implementation from pausing/unfocusing the app. There may occur unwanted issues accordingly.
 
 ---
 
