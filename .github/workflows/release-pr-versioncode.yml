@@ -3,15 +3,17 @@ name: Update versionCode in Release PR
 on:
   pull_request:
     types: [opened, synchronize, reopened, labeled]
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: write
+  pull-requests: write
+  issues: write
 
 jobs:
   set-versioncode:
-    # Only run on Release PRs opened by release-please (they carry this label)
-    if: contains(join(fromJson(toJson(github.event.pull_request.labels)).*.name, ','), 'autorelease: pending')
+    # Only run on release-please PRs (they carry the "autorelease: pending" label)
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'autorelease: pending') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout PR branch
@@ -21,7 +23,16 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           fetch-depth: 0
 
+      - name: Sanity check file presence
+        run: |
+          ls -la Assets || true
+          if [ ! -f Assets/version.txt ]; then
+            echo "Assets/version.txt not found on PR branch."
+            echo "Tip: ensure release-please updates this path (extra-files) and the file exists in main."
+          fi
+
       - name: Compute versionCode from semver in manifest
+        shell: bash
         run: |
           # Read the next version from release-please manifest in the PR
           VER=$(jq -r '."."' .github/.release-please-manifest.json)
