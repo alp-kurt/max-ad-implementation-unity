@@ -12,8 +12,8 @@ permissions:
 
 jobs:
   set-versioncode:
-    # Only run on release-please PRs (they carry the "autorelease: pending" label)
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'autorelease: pending') }}
+    # Run only on release-please PR branches
+    if: ${{ startsWith(github.event.pull_request.head.ref, 'release-please--') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout PR branch
@@ -26,19 +26,14 @@ jobs:
       - name: Sanity check file presence
         run: |
           ls -la Assets || true
-          if [ ! -f Assets/version.txt ]; then
-            echo "Assets/version.txt not found on PR branch."
-            echo "Tip: ensure release-please updates this path (extra-files) and the file exists in main."
-          fi
+          test -f Assets/version.txt && echo "Found Assets/version.txt" || echo "Missing Assets/version.txt"
 
       - name: Compute versionCode from semver in manifest
         shell: bash
         run: |
-          # Read the next version from release-please manifest in the PR
           VER=$(jq -r '."."' .github/.release-please-manifest.json)
           echo "Next version is: $VER"
 
-          # Extract MAJOR.MINOR.PATCH (ignore prerelease/build metadata if present)
           if [[ "$VER" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+) ]]; then
             MAJOR=${BASH_REMATCH[1]}
             MINOR=${BASH_REMATCH[2]}
@@ -48,12 +43,9 @@ jobs:
             exit 1
           fi
 
-          # Monotonic integer strategy for Google Play:
-          # versionCode = MAJOR*10000 + MINOR*100 + PATCH  (e.g., 2.3.4 -> 20304)
           CODE=$((MAJOR*10000 + MINOR*100 + PATCH))
           echo "Computed versionCode: $CODE"
 
-          # Write into Assets/ (not repo root)
           echo $CODE > Assets/versionCode.txt
 
           git config user.name "github-actions[bot]"
