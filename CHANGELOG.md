@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.2](https://github.com/alp-kurt/max-ad-implementation-unity/compare/v1.2.1...v1.2.2) (2025-08-11)
+
+
+### Bug Fixes
+
+* **bannerAd:** Add a new state to track loaded ads ([67c4523](https://github.com/alp-kurt/max-ad-implementation-unity/commit/67c4523a310b2a370dd465d1d5273f5f67452004))
+* **version:** Corrected the path for version.txt file ([6b31c0c](https://github.com/alp-kurt/max-ad-implementation-unity/commit/6b31c0c2a173a29641b7514aef2bd657ddd47884))
+
 ## [1.2.1](https://github.com/alp-kurt/max-ad-implementation-unity/compare/v1.2.0...v1.2.1) (2025-08-11)
 
 
