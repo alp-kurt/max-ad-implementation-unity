@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/alp-kurt/max-ad-implementation-unity/compare/v1.2.0...v1.2.1) (2025-08-11)
+
+
+### Bug Fixes
+
+* **workflow:** correct syntax error in the if block ([5f36ff9](https://github.com/alp-kurt/max-ad-implementation-unity/commit/5f36ff92ab53501cad5917918a76ddeb23d56c59))
+* **workflow:** correct syntax issue of the if block ([f5db670](https://github.com/alp-kurt/max-ad-implementation-unity/commit/f5db670f4af5927a4cd7316bb5e0d35957029ff5))
+
 ## [1.2.0](https://github.com/alp-kurt/max-ad-implementation-unity/compare/v1.1.1...v1.2.0) (2025-08-11)
 
 
