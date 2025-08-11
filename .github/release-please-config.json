@@ -5,7 +5,7 @@
       "release-type": "simple",
       "changelog-path": "CHANGELOG.md",
       "extra-files": [
-        { "type": "generic", "path": "version.txt" }
+        { "type": "generic", "path": "Assets/version.txt" }
       ]
     }
   }
