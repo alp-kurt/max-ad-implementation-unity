@@ -11,8 +11,9 @@ using UnityEngine;
 public class BannerAdController : MonoBehaviour
 {
     private string _adUnitId;
-    private bool _created; 
-    private bool _visible; 
+    private bool _created;
+    private bool _visible;
+    private bool _isLoaded;  
     private MaxAdSettings _settings;
 
     /// <summary>
@@ -40,7 +41,12 @@ public class BannerAdController : MonoBehaviour
         // --- Event: Banner successfully loaded ---
         MaxSdkCallbacks.Banner.OnAdLoadedEvent += (id, info) =>
         {
-            if (id == _adUnitId) Debug.Log($"[Banner] Loaded {id}");
+            if (id == _adUnitId)
+            {
+                _isLoaded = true;                         
+                Debug.Log($"[Banner] Loaded {id}");
+                if (_visible) MaxSdk.ShowBanner(_adUnitId);
+            }
         };
 
         // --- Event: Banner failed to load ---
@@ -75,14 +81,8 @@ public class BannerAdController : MonoBehaviour
 
         MaxSdk.LoadBanner(_adUnitId);
 
-        // Show or hide banner
-        if (_settings.startBannerHidden)
-            MaxSdk.HideBanner(_adUnitId);
-        else
-        {
-            MaxSdk.ShowBanner(_adUnitId);
-            _visible = true;
-        }
+        // Record initial intent; DO NOT show immediately
+        _visible = !_settings.startBannerHidden;
 
         _created = true;
     }
@@ -93,9 +93,20 @@ public class BannerAdController : MonoBehaviour
     public void Show()
     {
         if (!_created) return;
-        MaxSdk.ShowBanner(_adUnitId);
+
         _visible = true;
-        Debug.Log("[Banner] Shown");
+
+        if (_isLoaded)
+        {
+            MaxSdk.ShowBanner(_adUnitId);
+            Debug.Log("[Banner] Shown");
+        }
+        else
+        {
+            // Not ready yet → load; OnAdLoaded will show when ready
+            Debug.Log("[Banner] Not loaded yet...");
+            MaxSdk.LoadBanner(_adUnitId);
+        }
     }
 
     /// <summary>
@@ -104,8 +115,8 @@ public class BannerAdController : MonoBehaviour
     public void Hide()
     {
         if (!_created) return;
-        MaxSdk.HideBanner(_adUnitId);
         _visible = false;
+        MaxSdk.HideBanner(_adUnitId);
         Debug.Log("[Banner] Hidden");
     }
 
