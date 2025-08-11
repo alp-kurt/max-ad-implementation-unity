@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/alp-kurt/max-ad-implementation-unity/compare/v1.1.0...v1.1.1) (2025-08-11)
+
+
+### Bug Fixes
+
+* **workflow:** automated versioning for version and versionCode ([4c2b330](https://github.com/alp-kurt/max-ad-implementation-unity/commit/4c2b3306f68a67d3182f3fabb245efd3af2dbac7))
+
 ## [1.1.0](https://github.com/alp-kurt/max-ad-implementation-unity/compare/v1.0.0...v1.1.0) (2025-08-11)
 
 
