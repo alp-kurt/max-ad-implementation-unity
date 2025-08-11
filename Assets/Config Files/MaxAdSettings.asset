@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bd6b90d5a3504da79e3bec951f12364, type: 3}
+  m_Name: MaxAdSettings
+  m_EditorClassIdentifier: 
+  androidBannerId: 7d54f8fe50d4b222
+  androidInterstitialId: 58f24a034a1ab4d2
+  androidRewardedIdA: 39da376bc3211fc1
+  androidRewardedIdB: 67ad4fcfac164253
+  bannerPosition: 7
+  bannerBackground: {r: 0.14901961, g: 0.078431375, b: 0.28235295, a: 1}
+  startBannerHidden: 1
