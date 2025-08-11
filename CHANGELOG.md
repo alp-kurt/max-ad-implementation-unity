@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/alp-kurt/max-ad-implementation-unity/compare/v1.1.1...v1.2.0) (2025-08-11)
+
+
+### Features
+
+* add visual documentation ([09acb99](https://github.com/alp-kurt/max-ad-implementation-unity/commit/09acb99756dbfc518bf148a135dd814357662055))
+
 ## [1.1.1](https://github.com/alp-kurt/max-ad-implementation-unity/compare/v1.1.0...v1.1.1) (2025-08-11)
 
 
