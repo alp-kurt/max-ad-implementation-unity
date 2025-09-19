@@ -267,7 +267,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5666828438186316459}
   - component: {fileID: 1872305150188272672}
-  - component: {fileID: 4245535469208113219}
   m_Layer: 5
   m_Name: Buttons Container
   m_TagString: Untagged
@@ -324,22 +323,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &4245535469208113219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3031428768608084411}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 037fa339b4aff48d4a9bf9d667ef2471, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bannerToggleButton: {fileID: 5425372886702834565}
-  interstitialButton: {fileID: 608230648195508522}
-  rewardedAButton: {fileID: 6864248891715587705}
-  rewardedBButton: {fileID: 7030901122785498031}
 --- !u!1 &3340817372095388678
 GameObject:
   m_ObjectHideFlags: 0
@@ -868,6 +851,7 @@ GameObject:
   - component: {fileID: 5054136504841992249}
   - component: {fileID: 551162701603329780}
   - component: {fileID: 5425372886702834565}
+  - component: {fileID: 3295324006374647622}
   m_Layer: 5
   m_Name: Banner Ad Button
   m_TagString: Untagged
@@ -977,6 +961,24 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3295324006374647622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6243804158219639480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59d12e99ab2d4120bad88177cff584c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ads: {fileID: 0}
+  label: Banner
+  action: 2
+  autoFindAds: 1
+  disableWhileInvoking: 1
+  reenableDelay: 0.5
 --- !u!1 &8257489395681669899
 GameObject:
   m_ObjectHideFlags: 0

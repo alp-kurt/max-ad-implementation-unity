@@ -1,19 +1,20 @@
 # AppLovin MAX Unity Demo
 
 A Unity sample project demonstrating a clean, maintainable integration of **AppLovin MAX** for showing ads:
-- Banner ads
-- Interstitial ads
-- Two separate Rewarded ad units
+- Multiple Banner, Interstitial, and Rewarded placements
+- ScriptableObject profile to configure everything in the Inspector (no code edits)
+- Tiny, single-purpose controllers (per ad type) with safe callback unsubscribe
+- A button helper that triggers ads by label
 
 ![AppLovin MAX Unity Demo Screenshot in Unity Editor](images/applovin-demo-app.png)
 
 [Test the app on your own (APK Build 1.2.2)](https://drive.google.com/file/d/1OzIHEC8nNAk1F-vSLpD3YsqLrOG33_F7/view?usp=sharing)
 
-[Watch the app in action (Video Recording)](https://drive.google.com/file/d/1q5DcJc4B4QXEw6DGDT8PVSO4AKfCTTFk/view?usp=sharing)
+[Watch the app in action (Video Recording)](https://drive.google.com/file/d/1BYvfu6HTYCzlI3IkeQhTREfwakFt5mkN/view?usp=sharing)
 
 The project implements **all listener and delegate methods** for each ad type — even if only for logging — so you can clearly see the lifecycle of ads and how to hook into them.
 
-This project and documentation can be extended upon request. New features like Zenject demonstration, automated android version and similar useful implementation can be added.
+This project and documentation can be extended upon request. New features like Zenject and Reactive demonstration, automated android version or similar useful implementations can be added.
 
 ---
 
@@ -57,134 +58,114 @@ All relevant MAX callbacks are implemented and logged:
 
 ---
 
-## Project Structure and Script Descriptions
+## Quick Start
 
-### Scripts/Max/
+1. Create a Profile
 
-*  **[MaxInitializer.cs](Assets/Scripts/Max/MaxInitializer.cs)**
+    Right-click in Project: Create → Ads → MAX Ads Profile
 
-    - Initializes the MAX SDK once at app start and survives scene loads (DontDestroyOnLoad).
-    - Optional switches for verbose logging and test device IDs (must be set before InitializeSdk).
-    - Subscribes to MaxSdkCallbacks.OnSdkInitializedEvent and is the single place to kick off ad loading via MaxAdsService.
-    - Editor-safe: can expose a helper to open the Mediation Debugger on device.
-    - Common pitfalls it prevents: calling load/show before the SDK is initialized.
+2. Add items to:
 
-*  **[MaxAdService.cs](Assets/Scripts/Max/MaxAdService.cs)**
+    * Banners: set label, adUnitId, anchor, background, startHidden
 
-    - A small facade singleton that owns all ad controllers and exposes a tiny UI API:
-        - ToggleBanner(), 
-        - ShowInterstitial(), 
-        - ShowRewardedA(), 
-        - ShowRewardedB().
+    * Interstitials: set label, adUnitId, preloadOnStart
 
-    - Accepts a MaxAdSettings asset (ScriptableObject) so no IDs are hard-coded.
-    - Subscribes once and guards against double registration (e.g., scene reloads).
-    - Raises a simple ready signal after MAX init so UI can wire listeners safely.
-    - Ideal place to later route impression revenue to analytics/MMPs (kept out of controllers).
+    * Rewardeds: set label, adUnitId, preloadOnStart, optional rewardKey (e.g., coins, revive) and fallbackAmount
 
-*  **[BannerAdController.cs](Assets/Scripts/Max/BannerAdController.cs)**
+    The profile validates duplicates and empty fields in OnValidate (warnings in Console).
+
+3. Drop a Bootstrap Prefab in Your First Scene
+
+    * Create an empty GameObject called MaxAdsBootstrap
+
+* Add:
+
+    * MaxSdkBootstrap (SDK init; optional verbose logging and test GAID)
+
+    * MaxAds (assign your MaxAdsProfile)
+
+    Both components are designed to live across scenes (via DontDestroyOnLoad [Singleton] in scripts).
+
+4. Add Buttons (Optional)
+
+    Add a Button and attach MaxAdsButton
+
+    * Set Action (e.g., ShowRewarded), Label (must match a profile label), and (optionally) drag a reference to your MaxAds (or let it auto-find).
+    * **This script is helpful for you to check how to call the desired ads in an event driven way.**
+
+
+That’s it—press Play and use the buttons. Logs will show lifecycle events.
+
+---
+
+## Public API Structure and Script Descriptions
+
+* Banners
     
-    - Creates/configures a banner via AdViewConfiguration (position + background color).
-    - Handles load/show/hide/toggle and logs all supported banner callbacks:
-        - OnAdLoaded, 
-        - OnAdLoadFailed, 
-        - OnAdClicked, 
-        - OnAdExpanded, 
-        - OnAdCollapsed, 
-        - OnAdRevenuePaid.
+        MaxAds.ShowBanner("Home_Banner_1");
+        MaxAds.HideBanner("Home_Banner_1");
+        MaxAds.ToggleBanner("Home_Banner_1");
 
-*  **[InterstitialAdController.cs](Assets/Scripts/Max/InterstitialAdController.cs)**
+* Interstitials
+        
+        MaxAds.ShowInterstitial("LevelEnd_Interstitial");
+        MaxAds.PreloadInterstitial("LevelEnd_Interstitial");
 
-    - Manages full-screen interstitials: preload → show → preload next.
-    - Implements exponential backoff retry on load failures (1–64s).
-    
-    - Logs all interstitial callbacks:
-        - OnAdLoaded, 
-        - OnAdLoadFailed, 
-        - OnAdDisplayed, 
-        - OnAdDisplayFailed, 
-        - OnAdClicked, 
-        - OnAdHidden, 
-        - OnAdRevenuePaid.
-    - Public API: 
-        - Initialize(adUnitId), 
-        - Preload(), 
-        - Show().
+* Rewardeds
+        
+        MaxAds.ShowRewarded("Revive_Rewarded");
+        MaxAds.PreloadRewarded("Revive_Rewarded");
 
-* **[RewardedAdController.cs](Assets/Scripts/Max/RewardedAdController.cs)**
+### Reward Routing (Optional, Built-In)
 
-    - Same lifecycle as interstitials, plus the reward flow.
-        - Logs all rewarded callbacks:
-            - OnAdLoaded, 
-            - OnAdLoadFailed, 
-            - OnAdDisplayed, 
-            - OnAdDisplayFailed, 
-            - OnAdClicked, 
-            - OnAdHidden, 
-            - OnAdReceivedReward, 
-            - OnAdRevenuePaid.
+MaxAds listens to each RewardedAds controller’s OnRewardGranted event and calls a tiny router:
 
-    - Exposes **OnRewardGranted** event so game code (e.g., “skip question”, coins) can react without touching ad logic.
-    - Instantiated twice by MaxAdsService for Rewarded A and Rewarded B ad units.
+If rewardKey == "coins" → ResourceA.ReceiveReward(fallbackAmount)
 
-### Scripts/Configs/
+If rewardKey == "revive" → ResourceB.ReceiveReward(fallbackAmount)
 
-* **[MaxAdSettings.cs](Assets/Scripts/Config/MaxAdSettings.cs)**
+---
 
-    - ScriptableObject that centralizes ad configuration:
+## Controllers (What They Do)
 
-    - Android Ad Unit IDs: 
-        - Banner, 
-        - Interstitial, 
-        - Rewarded A and Rewarded B
-    - Banner position and background color
-    - Whether the banner starts hidden
-    - Create multiple assets (e.g., Dev, Staging, Prod) and swap them without changing code.
+* BannerAds
 
-### Scripts/UI/
+    Creates banner with AdViewConfiguration (anchor / background), safe unsubscribe of callbacks
 
-* **[MediationButton.cs](Assets/Scripts/UI/MediationButton.cs)**
+    * Show, 
+    * Hide, 
+    * Toggle, 
 
-    - Tiny helper to open the Mediation Debugger on device.
-    - Add to any UI button; useful for enabling Test Ads quickly and inspecting integrations.
+* InterstitialAds
 
-* **[ResourceLabel.cs](Assets/Scripts/UI/ResourceLabel.cs)**
-    
-    - Binds a label to a resource value (e.g., coins), subscribing to updates from ResourcesController.
-    - Keeps the UI in sync when rewards are granted—great for demos/screenshots.
+    * Initialize, 
+    * Preload, 
+    * Show
 
-* **[AdButtonsBinder.cs](Assets/Scripts/UI/AdButtonsBinder.cs)**
-    
-    - Optional runtime wiring: attaches button onClick handlers after MaxAdsService reports ready.
-    - Prevents double listeners and logs wiring, so you don’t need to set OnClick in the Inspector.
+**Exponential backoff retry on load failures (1→64s)**
 
-### Scripts/Resources/
+**Re-preloads after Hidden / DisplayFailed**
 
-* **[ResourceA/B + Receivers](Assets/Scripts/Resources/Resources.cs)**
-    
-    - Minimal “reward sinks” to demonstrate integrating ads with game state.
-    - Each resource tracks a value (e.g., “Coins A/B”).
+* RewardedAds
 
-* **[ResourcesController.cs](Assets/Scripts/Resources/ResourcesController.cs)**
-    
-    - Listens to RewardedAdController.OnRewardGranted and applies the corresponding reward to the selected resource(s).
-    - Updates any SimpleResourceLabel listeners and can persist via PlayerPrefs (optional).
-    - Keeps gameplay concerns (state/UI) decoupled from ad concerns (loading/showing/listening).
+**Same lifecycle as Interstitials**
 
-***
+* Raises OnRewardGranted(label) on OnAdReceivedReward
+
+All controllers use named handlers for MAX callbacks and unsubscribe in OnDestroy, preventing event buildup after script reloads.
+
+---
 
 ## How It Works
 
-1. **[Initialization](Assets/Scripts/Max/MaxInitializer.cs)**
-   - `MaxInitializer` runs at startup.
-   - Calls `MaxSdk.InitializeSdk()` and logs SDK details.
+1. **[Initialization](Assets/Scripts/Max/MaxSdkBootstrap.cs)**
+   - `MaxSdkBootstrap` runs at startup.
 
-2. **[Ad Service](Assets/Scripts/Max/MaxAdService.cs)**
-   - `MaxAdsService` creates and initializes controllers for 
+2. **[Ad Service](Assets/Scripts/Max/MaxAds.cs)**
+   - `MaxAds` creates and initializes controllers for 
         - Banner, 
         - Interstitial, 
         - Rewarded A, and Rewarded B.
-   - Preloads all ads on initialization as suggested.
    - Exposes simple methods: 
         - `ToggleBanner()`, 
         - `ShowInterstitial()`, 
@@ -193,12 +174,12 @@ All relevant MAX callbacks are implemented and logged:
 
 3. **Controllers**
    - Each ad type has its own controller: 
-        - [BannerAdController](Assets/Scripts/Max/BannerAdController.cs), 
-        - [InterstitialAdController](Assets/Scripts/Max/InterstitialAdController.cs), 
-        - [RewardedAdController](Assets/Scripts/Max/RewardedAdController.cs).
+        - [BannerAdController](Assets/Scripts/Max/BannerAds.cs), 
+        - [InterstitialAdController](Assets/Scripts/Max/InterstitialAds.cs), 
+        - [RewardedAdController](Assets/Scripts/Max/RewardedAds.cs).
    - Subscribes to **all** MAX events and logs them.
    - Includes retry logic for failed loads (Interstitial & Rewarded).
-   - Banner appearance and placement is configurable via [MaxAdSettings](Assets/Scripts/Config/MaxAdSettings.cs).
+   - Banner appearance and placement is configurable via [MaxAdProfile](Assets/Scripts/Max/MaxAdsProfile.cs).
 
 4. **Rewards**
    - [ResourcesController](Assets/Scripts/Resources/ResourcesController.cs) listens to `OnAdReceivedRewardEvent`.
@@ -209,33 +190,6 @@ All relevant MAX callbacks are implemented and logged:
 5. **UI Binding**
    - [AdButtonsBinder](Assets/Scripts/UI/AdButtonsBinder.cs) connects Unity UI Buttons to ad service methods once `MaxAdsService` is ready.
    - [MediationButton](Assets/Scripts/UI/MediationButton.cs) opens the Mediation Debugger.
-
-
-## Setup
-
-1. **Get Ad Unit IDs**
-   - In the MAX dashboard, create:
-     - 1x Banner
-     - 1x Interstitial
-     - 2x Rewarded
-   - Assign them to [MaxAdSettings](Assets/Scripts/Config/MaxAdSettings.cs) in the Unity Inspector.
-
-2. **Test Device**
-   - (Optional) Find your GAID and enter it in `MaxInitializer.testDeviceGAID` to enable test ads.
-   - Additionally, set your device as a test device using the Mediation Debugger.
-
-3. **Run**
-   - Open the demo scene.
-   - Press Play.
-   - Use the buttons to trigger ads and watch logs in the Console.
-
-   ---
-
-## Extending This Demo
-
-- **New Rewarded Ads**: Add new fields in `MaxAdSettings` and handle them in `ResourcesController`.
-- **Different Reward Logic**: Replace `ResourceA/B` with your own reward systems.
-- **Custom UI**: Replace `AdButtonsBinder` with your own game UI integration.
 
 ---
 

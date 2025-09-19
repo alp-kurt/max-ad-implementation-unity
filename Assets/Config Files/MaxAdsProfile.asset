@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f730b3930c4bd4189a60c2c99578183e, type: 3}
+  m_Name: MaxAdsProfile
+  m_EditorClassIdentifier: 
+  banners:
+  - label: Banner
+    adUnitId: 7d54f8fe50d4b222
+    anchor: 4
+    background: {r: 0.14901961, g: 0.078431375, b: 0.28235295, a: 0}
+    startHidden: 1
+  interstitials:
+  - label: Interstitial2
+    adUnitId: 58f24a034a1ab4d2
+    preloadOnStart: 1
+  rewardeds:
+  - label: Reward_A
+    adUnitId: 39da376bc3211fc1
+    preloadOnStart: 1
+    rewardKey: reward_A
+    fallbackAmount: 1
+  - label: Reward_B
+    adUnitId: 67ad4fcfac164253
+    preloadOnStart: 0
+    rewardKey: reward_B
+    fallbackAmount: 10
