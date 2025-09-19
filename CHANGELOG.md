@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/alp-kurt/max-ad-implementation-unity/compare/v1.2.2...v2.0.0) (2025-09-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* add scalable ad integration through Max Ad Profile
+
+### Features
+
+* add scalable ad integration through Max Ad Profile ([64c6555](https://github.com/alp-kurt/max-ad-implementation-unity/commit/64c655584b2f78db6ca3f7c303dce96b28ee0f24))
+
 ## [1.2.2](https://github.com/alp-kurt/max-ad-implementation-unity/compare/v1.2.1...v1.2.2) (2025-08-11)
 
 
