@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7313200096982652363}
-  - component: {fileID: 5800415710056666552}
-  - component: {fileID: 5834262952196790542}
+  - component: {fileID: 3011535380191770317}
+  - component: {fileID: 3015048192557920115}
   m_Layer: 0
   m_Name: Max Ads Service
   m_TagString: Untagged
@@ -33,7 +33,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5800415710056666552
+--- !u!114 &3011535380191770317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895730163197859913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a62820afdf6641db96f00da2adb499d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: d6ad244017cf34df282714f92849abc4, type: 2}
+--- !u!114 &3015048192557920115
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,16 +60,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   verboseLogging: 1
   testDeviceGAID: 
---- !u!114 &5834262952196790542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1895730163197859913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a62820afdf6641db96f00da2adb499d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  profile: {fileID: 11400000, guid: d6ad244017cf34df282714f92849abc4, type: 2}

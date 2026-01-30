@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 96991146879611658}
   - component: {fileID: 4816726476395828279}
   - component: {fileID: 608230648195508522}
+  - component: {fileID: 3106818871586045207}
   m_Layer: 5
   m_Name: Inter Ad Button
   m_TagString: Untagged
@@ -121,6 +122,24 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3106818871586045207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2340660243613496149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59d12e99ab2d4120bad88177cff584c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ads: {fileID: 0}
+  label: Interstitial2
+  action: 0
+  autoFindAds: 1
+  disableWhileInvoking: 1
+  reenableDelay: 0.5
 --- !u!1 &2972378737621128275
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +354,7 @@ GameObject:
   - component: {fileID: 5966481205176424056}
   - component: {fileID: 5947701596152174346}
   - component: {fileID: 6864248891715587705}
+  - component: {fileID: 5878403944726801321}
   m_Layer: 5
   m_Name: Rewarded Ad Button A
   m_TagString: Untagged
@@ -444,6 +464,24 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5878403944726801321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3340817372095388678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59d12e99ab2d4120bad88177cff584c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ads: {fileID: 0}
+  label: Reward_A
+  action: 1
+  autoFindAds: 1
+  disableWhileInvoking: 1
+  reenableDelay: 0.5
 --- !u!1 &5186504476816862949
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,6 +494,7 @@ GameObject:
   - component: {fileID: 5656393244144637891}
   - component: {fileID: 487976926238084205}
   - component: {fileID: 7030901122785498031}
+  - component: {fileID: 7310410215866125119}
   m_Layer: 5
   m_Name: Rewarded Ad Button B
   m_TagString: Untagged
@@ -565,6 +604,24 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7310410215866125119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5186504476816862949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59d12e99ab2d4120bad88177cff584c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ads: {fileID: 0}
+  label: Reward_B
+  action: 1
+  autoFindAds: 1
+  disableWhileInvoking: 1
+  reenableDelay: 0.5
 --- !u!1 &5281426442606442878
 GameObject:
   m_ObjectHideFlags: 0
